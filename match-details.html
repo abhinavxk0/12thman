@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Details</title>
+    <link rel="stylesheet" href="/styling/match-details.css">
+</head>
+
+<body>
+    <div id="match-info">
+        <h1 id="title">FutScore</h1>
+        <div class="match-card">
+            <!-- Team Logos and Names -->
+            <div class="match-teams">
+                <div class="team home-team">
+                    <img id="home-logo" src="" alt="Home Team Logo">
+                    <p id="home-team-name"></p>
+                </div>
+
+                <div class="vs">
+                    <p>vs</p>
+                </div>
+
+                <div class="team away-team">
+                    <img id="away-logo" src="" alt="Away Team Logo">
+                    <p id="away-team-name"></p>
+                </div>
+            </div>
+
+            <!-- Match Date and Time -->
+            <div class="match-time" id="match-time"></div>
+            
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const match = JSON.parse(localStorage.getItem('selectedMatch'));
+
+            if (match) {
+                // Set logos, names, and match time
+                const homeLogo = document.getElementById('home-logo');
+                const awayLogo = document.getElementById('away-logo');
+                const homeTeamName = document.getElementById('home-team-name');
+                const awayTeamName = document.getElementById('away-team-name');
+                const matchTime = document.getElementById('match-time');
+
+                homeLogo.src = match.homeTeam.logo;
+                awayLogo.src = match.awayTeam.logo;
+                homeTeamName.textContent = match.homeTeam.name;
+                awayTeamName.textContent = match.awayTeam.name;
+
+                const formattedDate = new Date(match.utcDate).toLocaleString('en-US', {
+                    weekday: 'long',   // Day of the week (e.g., 'Monday')
+                    year: 'numeric',   // Full year (e.g., 2025)
+                    month: 'long',     // Full month name (e.g., 'January')
+                    day: 'numeric',    // Day of the month (e.g., 3)
+                    hour: '2-digit',   // 12-hour format hour (e.g., 02 or 2)
+                    minute: '2-digit', // 2-digit minutes (e.g., 30)
+                    hour12: true       // Use 12-hour clock (AM/PM)
+                });
+                matchTime.textContent = formattedDate;
+            } else {
+                document.body.innerHTML = '<p>No match data available.</p>';
+            }
+        });
+    </script>
+</body>
+
+</html>
